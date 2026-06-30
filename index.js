@@ -1,19 +1,22 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const { Pool } = require('pg');
+const path = require('path'); // <-- Necesitamos esto
 
 const app = express();
 app.use(express.json());
 
-// Configuración de la conexión a PostgreSQL (Apunta a tu EC2)
+// --- ESTA LÍNEA ES LA CLAVE PARA TU PÁGINA ---
+app.use(express.static(path.join(__dirname, 'public')));
+// ---------------------------------------------
+
 const pool = new Pool({
     user: 'admin_erp',
-    host: 'localhost',      
+    host: '10.0.1.11',      
     database: 'cruz_azul_db',
     password: 'Inacap2026',
-    port: 5433, // <-- ¡Cambiamos el puerto a 5433!
+    port: 5432, 
 });
-
 // Clave secreta para firmar los tokens (En producción debería ir en un archivo .env)
 const SECRET_KEY = 'cruzazul_clave_super_secreta';
 
