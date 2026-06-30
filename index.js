@@ -17,6 +17,7 @@ const pool = new Pool({
     password: 'Inacap2026',
     port: 5432, 
 });
+
 // Clave secreta para firmar los tokens (En producción debería ir en un archivo .env)
 const SECRET_KEY = 'cruzazul_clave_super_secreta';
 
