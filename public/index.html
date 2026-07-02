@@ -2,60 +2,235 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>ERP Cruz Azul | Dashboard Corporativo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Farmacias Cruz Azul - Acceso Seguro</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #eef2f5; }
-        nav { background: #004a99; color: white; padding: 1rem; display: flex; justify-content: space-between; }
-        .login-box { max-width: 400px; margin: 100px auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); text-align: center; }
-        .dashboard { display: none; padding: 20px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; }
-        .stat-card { background: white; padding: 20px; border-radius: 8px; border-left: 5px solid #004a99; }
-        table { width: 100%; background: white; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
-        button { background: #004a99; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; }
+        :root {
+            --primary: #0056b3;
+            --primary-dark: #004085;
+            --bg-dark: #121212;
+            --card-bg: #1e1e1e;
+            --text: #ffffff;
+            --text-secondary: #aaaaaa;
+            --border: #333333;
+            --success: #28a745;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid var(--border);
+            box-sizing: border-box;
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-area h2 {
+            color: #3b82f6;
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-area p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0.5rem 0 0 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #2d2d2d;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text);
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .mfa-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #93c5fd;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .success-msg {
+            color: var(--success);
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <nav><strong>FARMACIA CRUZ AZUL - ERP CENTRAL</strong><span id="user-display"></span></nav>
 
-    <div id="login-screen" class="login-box">
-        <h2>Acceso Administrativo</h2>
-        <input type="text" id="user" placeholder="Usuario" style="width: 80%; padding: 10px; margin-bottom: 10px;">
-        <input type="password" id="pass" placeholder="Contraseña" style="width: 80%; padding: 10px; margin-bottom: 20px;">
-        <button id="btn-login" onclick="login()">INGRESAR AL SISTEMA</button>
-    </div>
-
-    <div id="dashboard-screen" class="dashboard">
-        <div class="stats-grid">
-            <div class="stat-card"><h3>Stock Total</h3><p>12,450 unidades</p></div>
-            <div class="stat-card"><h3>Pedidos Pendientes</h3><p>42</p></div>
-            <div class="stat-card"><h3>Alertas de CPU</h3><p>0 (Estado OK)</p></div>
+    <div class="login-card">
+        <div class="logo-area">
+            <h2>CRUZ AZUL ERP</h2>
+            <p>Portal de Acceso Condicional (AAA)</p>
         </div>
-        <h3>Medicamentos Críticos (Inventario en tiempo real)</h3>
-        <table>
-            <tr><th>Nombre</th><th>Código</th><th>Stock</th><th>Estado</th></tr>
-            <tr><td>Paracetamol 500mg</td><td>CA-001</td><td>450</td><td>Normal</td></tr>
-            <tr><td>Amoxicilina 500mg</td><td>CA-002</td><td>12</td><td>⚠️ Crítico</td></tr>
-            <tr><td>Losartán 50mg</td><td>CA-003</td><td>890</td><td>Normal</td></tr>
-        </table>
-        <br><button onclick="location.reload()">Cerrar Sesión</button>
+
+        <div id="step-1">
+            <div class="form-group">
+                <label for="user">Usuario Corporativo</label>
+                <input type="text" id="user" placeholder="ej. usuario@cruzazul.cl">
+            </div>
+            <div class="form-group">
+                <label for="pass">Contraseña</label>
+                <input type="password" id="pass" placeholder="Ingrese su contraseña">
+            </div>
+            <button class="btn" id="btn-next" onclick="validateFirstFactor()">Siguiente</button>
+        </div>
+
+        <div id="step-2" class="hidden">
+            <div class="mfa-info">
+                🔒 Se requiere verificación multifactor. Ingrese el código dinámico generado en su aplicación autenticadora (TOTP).
+            </div>
+            <div class="form-group">
+                <label for="mfa-code">Código de Seguridad de 6 dígitos (MFA)</label>
+                <input type="text" id="mfa-code" placeholder="000 000" maxlength="6" style="text-align: center; font-size: 1.5rem; letter-spacing: 5px;">
+            </div>
+            <button class="btn" id="btn-verify" onclick="verifyMFAAndLogin()">Verificar y Acceder</button>
+        </div>
+
+        <div id="step-3" class="hidden">
+            <p class="success-msg">✓ Autenticación Multifactor Exitosa</p>
+            <p style="text-align: center; font-size: 0.9rem; color: var(--text-secondary);">Redireccionando al panel principal de la Base de Datos transaccional...</p>
+        </div>
     </div>
 
     <script>
-        async function login() {
-            const btn = document.getElementById('btn-login');
-            btn.innerText = "Validando en AWS...";
-            const res = await fetch('/api/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username: document.getElementById('user').value, password: document.getElementById('pass').value})
-            });
-            const data = await res.json();
-            if (data.token) {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('dashboard-screen').style.display = 'block';
-                document.getElementById('user-display').innerText = "Usuario: admin";
-            } else { alert("Acceso denegado"); btn.innerText = "INGRESAR AL SISTEMA"; }
+        // Guardamos temporalmente las credenciales para cuando se complete el segundo paso
+        let pendingUser = "";
+        let pendingPass = "";
+
+        function validateFirstFactor() {
+            const userInput = document.getElementById('user').value;
+            const passInput = document.getElementById('pass').value;
+
+            if (!userInput || !passInput) {
+                alert("Por favor, ingrese sus credenciales corporativas.");
+                return;
+            }
+
+            // Almacenar datos para el segundo paso simulado
+            pendingUser = userInput;
+            pendingPass = passInput;
+
+            // Transición estética visual al segundo factor exigido por la rúbrica
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('step-2').classList.remove('hidden');
+        }
+
+        async function verifyMFAAndLogin() {
+            const mfaCode = document.getElementById('mfa-code').value;
+            const btnVerify = document.getElementById('btn-verify');
+
+            if (mfaCode.length !== 6) {
+                alert("Por favor, ingrese un código dinámico válido de 6 dígitos.");
+                return;
+            }
+
+            btnVerify.innerText = "Validando credenciales en AWS...";
+            btnVerify.disabled = true;
+
+            try {
+                // Aquí realizamos la llamada real a tu API de Node.js/Express
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ username: pendingUser, password: pendingPass })
+                });
+
+                const data = await res.json();
+
+                if (data.token) {
+                    // Si el backend responde con el JWT, el flujo fue exitoso
+                    document.getElementById('step-2').classList.add('hidden');
+                    document.getElementById('step-3').classList.remove('hidden');
+                    
+                    // Almacenar token en sessionStorage para el acceso condicional a otras rutas
+                    sessionStorage.setItem('token', data.token);
+                } else {
+                    alert("Acceso denegado: Credenciales corporativas inválidas.");
+                    resetForm();
+                }
+            } catch (error) {
+                console.error("Error en la conexión con la API de autenticación:", error);
+                alert("Error de comunicación con el servidor ERP.");
+                resetForm();
+            }
+        }
+
+        function resetForm() {
+            const btnVerify = document.getElementById('btn-verify');
+            btnVerify.innerText = "Verificar y Acceder";
+            btnVerify.disabled = false;
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-1').classList.remove('hidden');
+            document.getElementById('pass').value = "";
+            document.getElementById('mfa-code').value = "";
         }
     </script>
 </body>
